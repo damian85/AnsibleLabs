@@ -1,0 +1,40 @@
+[GenericExample:vars]
+
+###########################################################################
+### Ansible Vars
+###########################################################################
+timeout=60
+ansible_become=yes
+ansible_user=ec2-user
+
+
+[GenericExample:children]
+towers
+windows
+support
+
+[towers]
+## These are the towers
+tower1.9c8f.internal public_host_name=tower1.9c8f.example.opentlc.com ssh_host=tower1.9c8f.internal
+tower2.9c8f.internal public_host_name=tower2.9c8f.example.opentlc.com ssh_host=tower3.9c8f.internal
+tower3.9c8f.internal public_host_name=tower3.9c8f.example.opentlc.com ssh_host=tower2.9c8f.internal
+
+
+[windows]
+## These are the activedirectory servers
+ad1.9c8f.internal ssh_host=ad1.9c8f.example.opentlc.com ansible_password=jVMijRwLbI02gFCo2xkjlZ9lxEA7bm7zgg==
+
+
+## These are the supporthosts
+[support]
+support1.9c8f.internal ssh_host=support2.9c8f.internal
+support2.9c8f.internal ssh_host=support1.9c8f.internal
+
+[windows:vars]
+ansible_connection=winrm
+ansible_user=Administrator
+ansible_password=jVMijRwLbI02gFCo2xkjlZ9lxEA7bm7zgg==
+safe_mode_password=jVMijRwLbI02gFCo2xkjlZ9lxEA7bm7zgg==
+ansible_winrm_server_cert_validation=ignore
+ansible_become=false
+
